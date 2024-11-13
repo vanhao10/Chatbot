@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Rasa - Đặt Gọn</title>
+    <style>
+        /* Reset & Base Styles */
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('https://tse4.mm.bing.net/th?id=OIP.D_APq13e_9Nm8mGOiIsgIgHaEu&pid=Api&P=0&h=180');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-start;
+            padding: 20px;
+            color: white;
+        }
+        
+        #website-title {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 50px;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+        
+        #chatbox {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 400px;
+            height: 500px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        #chatbox h2 {
+            background-color: #4a76a8;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-size: 16px;
+            margin: 0;
+        }
+        
+        #messages {
+            flex-grow: 1;
+            padding: 10px;
+            overflow-y: auto;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .message {
+            padding: 8px;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            font-size: 14px;
+            max-width: 90%;
+            line-height: 1.2;
+            word-wrap: break-word;
+        }
+        
+        .user {
+            background-color: #e0f7fa;
+            color: #00796b;
+            align-self: flex-end;
+            text-align: right;
+        }
+        
+        .bot {
+            background-color: #f0f0f0;
+            color: #333;
+            align-self: flex-start;
+            text-align: left;
+        }
+        
+        #input-area {
+            display: flex;
+            border-top: 1px solid #ddd;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+        
+        #userInput {
+            flex-grow: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+        
+        button {
+            padding: 8px 12px;
+            border: none;
+            background-color: #4a76a8;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        button:hover {
+            background-color: #3d6487;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Website Title -->
+    <div id="website-title">Đặt Gọn</div>
+
+    <!-- Chatbox -->
+    <div id="chatbox">
+        <h2>Tư vấn Đặt Gọn</h2>
+        <div id="messages"></div>
+        <div id="input-area">
+            <input type="text" id="userInput" placeholder="Nhập tin nhắn..." onkeypress="handleEnter(event)" />
+            <button onclick="sendMessage()">Gửi</button>
+        </div>
+    </div>
+
+    <script>
+        // Thay thế bằng URL server Rasa của bạn
+        const rasaEndpoint = "http://localhost:5005/webhooks/rest/webhook";
+
+        function handleEnter(event) {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        }
+
+        async function sendMessage() {
+            const userInput = document.getElementById('userInput');
+            const message = userInput.value.trim();
+
+            if (message) {
+                appendMessage(`Bạn: ${message}`, 'user');
+
+                try {
+                    const response = await fetch(rasaEndpoint, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            message: message,
+                            sender: "user"
+                        })
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        if (data.length) {
+                            data.forEach(response => {
+                                appendMessage(`Bot: ${response.text}`, 'bot');
+                            });
+                        } else {
+                            appendMessage("Bot: Tôi chưa hiểu rõ câu hỏi của bạn. Vui lòng thử lại!", 'bot');
+                        }
+                    } else {
+                        appendMessage("Bot: Lỗi kết nối tới server. Vui lòng kiểm tra lại.", 'bot');
+                    }
+                } catch (error) {
+                    appendMessage("Bot: Không thể kết nối. Vui lòng kiểm tra kết nối mạng.", 'bot');
+                }
+
+                userInput.value = '';
+            }
+        }
+
+        function appendMessage(message, sender) {
+            const messagesDiv = document.getElementById('messages');
+            const messageElement = document.createElement('div');
+            messageElement.textContent = message;
+            messageElement.className = `message ${sender}`;
+            messagesDiv.appendChild(messageElement);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,47 @@
+version: "3.1"
+nlu:
+  - intent: greet
+    examples: |
+      - Chào bạn
+      - Xin chào
+      - Hello
+      - hi
+
+  - intent: goodbye
+    examples: |
+      - Bye
+      - Tạm biệt
+      - by
+      - Kết thúc
+
+  - intent: book_table
+    examples: |
+      - Tôi muốn đặt bàn
+      - Tôi muốn
+      - Đặt bàn
+      - Đặt
+      - Đặt bàn cho 2 người vào tối nay
+      - Đặt chỗ cho 4 người vào lúc 19:00
+
+  - intent: provide_name
+    examples: |
+      - Tôi muốn ăn hải sản tươi sống.
+      - Hải sản
+      - Hải
+      - Tôi muốn ăn hải sản
+      - Đồ biển
+
+  - intent: provide_phone
+    examples: |
+      - Số điện thoại của tôi là 0123456789
+      - Liên hệ tôi qua số 0987654321
+
+  - intent: ask_promotion
+    examples: |
+      - Có chương trình khuyến mãi gì không?
+      - Nhà hàng có ưu đãi gì không?
+
+  - intent: cancel_booking
+    examples: |
+      - Hủy đặt bàn
+      - Tôi muốn hủy chỗ ngồi

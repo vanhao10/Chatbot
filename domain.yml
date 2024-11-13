@@ -1,0 +1,81 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - bot_challenge
+  - book_table
+  - provide_name
+  - provide_phone
+  - ask_promotion
+  - cancel_booking
+
+entities:
+  - number_of_people
+  - time
+  - table_type
+  - name
+  - phone
+
+slots:
+  name:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: name
+
+  phone:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: phone
+
+  number_of_people:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: number_of_people
+
+  time:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: time
+
+  table_type:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: table_type
+
+responses:
+  utter_greet:
+    - text: "Hi! Chào mừng bạn đến với dịch vụ đặt bàn trực tuyến của chúng tôi.Chúng tôi có thể giúp gì cho bạn?"
+
+  utter_goodbye:
+    - text: "Tạm biệt! Hẹn gặp lại bạn." 
+
+  utter_ask_name:
+    - text: "Dạ, có rất nhiều lựa chọn cho bạn. Nếu bạn thích không gian ấm cúng và món ăn gia đình, mình gợi ý Bếp Mẹ với những món ăn dân dã đậm đà hương vị. Còn nếu bạn muốn thưởng thức ẩm thực cung đình, Quán Ăn Cung Đình sẽ là một trải nghiệm tuyệt vời."
+
+  utter_ask_phone:
+    - text: "Nếu bạn muốn thưởng thức hải sản tươi sống, Hải Sản Xanh là một lựa chọn tuyệt vời. Nhà hàng này nổi tiếng với các món hải sản tươi sống được đánh bắt hàng ngày, đặc biệt là tôm hùm và cua. Hoặc, nếu bạn muốn một không gian sang trọng hơn, Nhà hàng Biển sẽ là một lựa chọn hoàn hảo với những món hải sản cao cấp như bào ngư, cá mú."
+
+  utter_confirm_booking:
+    - text: "Đặt bàn thành công."
+
+  utter_show_promotions:
+    - text: "Dưới đây là các chương trình khuyến mãi hiện tại của chúng tôi."
+
+  utter_cancel_booking:
+    - text: "Đã hủy đặt bàn của bạn. Nếu cần hỗ trợ thêm, xin vui lòng liên hệ với chúng tôi."
+
+  utter_iamabot:
+    - text: "Tôi là một trợ lý ảo, sẵn sàng giúp bạn!"
+actions:
+  - action_confirm_booking
+  - action_cancel_booking  # Đã thêm action_cancel_booking để thực hiện hủy đặt bàn
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

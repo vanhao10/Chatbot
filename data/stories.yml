@@ -1,0 +1,41 @@
+version: "3.1"
+
+stories:
+  - story: Chào hỏi 
+    steps:
+      - intent: greet
+      - action: utter_greet
+
+  - story: Kết thúc hội thoại
+    steps:
+      - intent: goodbye
+      - action: utter_goodbye
+
+  - story: Đặt bàn thành công
+    steps:
+      - intent: book_table
+      - action: utter_ask_name
+
+  - story: Tên người đặt
+    steps:
+      - intent: provide_name
+      - action: utter_ask_phone
+
+  - story: Số điện thoại
+    steps:
+      - intent: provide_phone
+      - action: action_confirm_booking
+
+  - story: Hỏi về khuyến mãi
+    steps:
+      - intent: ask_promotion
+      - action: utter_show_promotions
+
+  - story: Hủy đặt bàn
+    steps:
+      - intent: cancel_booking
+      - action: action_cancel_booking
+
+
+    
+ 
